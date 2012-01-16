@@ -66,7 +66,7 @@ module Carmen
     # Return data after filtering excluded countries and prepending prepended countries
     result = @countries[locale].reject { |c| excluded_countries.include?( c[1] ) }
     if included_countries
-      result = result.select{|c| !included_countries.include?(c[1])}
+      result = result.select{|c| included_countries.include?(c[1])}
     end
     priority_countries.map { |code| [ search_collection(result, code, 1, 0), code ] } + result
   end
