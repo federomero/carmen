@@ -19,12 +19,13 @@ require 'carmen/version'
 module Carmen
   class << self
     attr_accessor :default_country, :default_locale, :excluded_countries, :excluded_states,
-                  :priority_countries
+                  :priority_countries, :included_countries
   end
 
   self.default_country = 'US'
   self.default_locale = :en
   self.excluded_countries = []
+  self.included_countries = nil
   self.excluded_states = {}
   self.priority_countries = []
 
@@ -64,6 +65,9 @@ module Carmen
 
     # Return data after filtering excluded countries and prepending prepended countries
     result = @countries[locale].reject { |c| excluded_countries.include?( c[1] ) }
+    if included_countries
+      result = result.reject{|c| included_countries.include?(c[1])}
+    end
     priority_countries.map { |code| [ search_collection(result, code, 1, 0), code ] } + result
   end
 
